@@ -2,10 +2,15 @@
 <html>
   <head>
     <title>Ancient DNA</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='stylesheets/style.css'>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+      <script type="text/javascript" src="javascripts/angularApp.js"></script>
   </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+<!-- Remove ng-controller via ui-router code -->
+  <body ng-app="ancientDNA" ng-controller="MainCtrl">
+    <h1>Ancient DNA</h1>
+    <p>{{test}}</p>
   </body>
 </html>
