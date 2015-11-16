@@ -1,0 +1,4 @@
+# table produced by mapDamage version 2.0.6
+# using mapped file - and /root/ancient_dna_pipeline/ref/contamination.fa as reference file
+# Std: strand of reads
+Std	Length	Occurences 

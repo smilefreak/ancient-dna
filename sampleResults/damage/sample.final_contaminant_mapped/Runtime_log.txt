@@ -1,0 +1,11 @@
+2015-11-10 15:04:30,573	INFO	main: Started with the command: /usr/local/bin/mapDamage -i results/bams/sample.final_contaminant_mapped.bam -d results/damage/sample.final_contaminant_mapped --rescale -r /root/ancient_dna_pipeline/ref/contamination.fa
+2015-11-10 15:04:31,292	DEBUG	main: BAM read in 3.368073 seconds
+2015-11-10 15:04:31,834	INFO	mapdamage.rscript: Performing Bayesian estimates
+2015-11-10 15:04:31,834	DEBUG	mapdamage.rscript: Call: Rscript /usr/local/lib/python2.7/dist-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 results/damage/sample.final_contaminant_mapped/ /usr/local/lib/python2.7/dist-packages/mapdamage/Rscripts/stats/ results/damage/sample.final_contaminant_mapped/Stats_out 0 0 0 results/damage/sample.final_contaminant_mapped/acgt_ratio.csv 0 0
+2015-11-10 15:14:02,603	DEBUG	mapdamage.rscript: Bayesian estimates completed in 570.767830 seconds
+2015-11-10 15:14:02,604	INFO	mapdamage.rescale: Rescaling BAM: 'results/bams/sample.final_contaminant_mapped.bam' -> 'results/damage/sample.final_contaminant_mapped/sample.final_contaminant_mapped.rescaled.bam'
+2015-11-10 15:14:02,607	WARNING	mapdamage.rescale: Warning! Assuming the pairs are non-overlapping, facing inwards and correctly paired.
+2015-11-10 15:14:03,392	WARNING	mapdamage.rescale: Number of non-rescaled reads due to improper pairing:  1748
+2015-11-10 15:14:03,401	DEBUG	mapdamage.rescale: Rescaling completed in 0.797112 seconds
+2015-11-10 15:14:03,401	INFO	main: Successful run
+2015-11-10 15:14:03,401	DEBUG	main: Run completed in 575.477626 seconds

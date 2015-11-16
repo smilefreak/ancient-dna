@@ -1,0 +1,7 @@
+2015-11-10 15:15:26,670	INFO	main: Started with the command: /usr/local/bin/mapDamage -i - -d results/damage_plots/results/bams/sample.final_contaminant_mapped.bam -r /root/ancient_dna_pipeline/ref/contamination.fa --title sample.final_contaminant_mapped
+2015-11-10 15:15:27,276	DEBUG	main: BAM read in 2.499371 seconds
+2015-11-10 15:15:27,794	INFO	mapdamage.rscript: Performing Bayesian estimates
+2015-11-10 15:15:27,794	DEBUG	mapdamage.rscript: Call: Rscript /usr/local/lib/python2.7/dist-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 results/damage_plots/results/bams/sample.final_contaminant_mapped.bam/ /usr/local/lib/python2.7/dist-packages/mapdamage/Rscripts/stats/ results/damage_plots/results/bams/sample.final_contaminant_mapped.bam/Stats_out 0 0 0 results/damage_plots/results/bams/sample.final_contaminant_mapped.bam/acgt_ratio.csv 0 0
+2015-11-10 15:25:03,316	DEBUG	mapdamage.rscript: Bayesian estimates completed in 575.521878 seconds
+2015-11-10 15:25:03,317	INFO	main: Successful run
+2015-11-10 15:25:03,317	DEBUG	main: Run completed in 578.540927 seconds
