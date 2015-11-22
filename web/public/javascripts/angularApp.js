@@ -7,9 +7,19 @@ app.config(['$stateProvider', '$urlRouterProvider',
         $stateProvider
             .state('home', {
                 url: '/home',
-                templateUrl: '/home.html',
-                controller: 'MainCtrl',
-            });
+                templateUrl: '/home.ejs',
+                controller: 'MainCtrl'
+            })
+            .state('newJob', {
+                url: '/newJob',
+                templateUrl: '/newJob.ejs',
+                controller: 'MainCtrl'
+            })
+            .state('account', {
+                url: '/account',
+                templateUrl: '/account.ejs',
+                controller: 'MainCtrl'
+            })
         $urlRouterProvider.otherwise('home');
     }
 ]);
