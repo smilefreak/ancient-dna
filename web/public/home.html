@@ -1,0 +1,119 @@
+<p>{{test}}</p>
+<hr>
+<form>
+    <fieldset class="form-group">
+        <label for="jobName">Job Name</label>
+        <input type="email" class="form-control" id="jobName" placeholder="Enter a name for this job">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="inFile">Files to Process</label>
+        <input type="file" class="form-control-file" id="inFile" multiple>
+        <small class="text-muted">Select your A/B/C type files.</small>
+    </fieldset>
+    <fielset class="form-group">
+        <p>This file input is not yet fully implemented by bootstrap, if they finish making it I will use it.</p>
+        <label class="file">
+            <input type="file" id="file">
+            <span class="file-custom"></span>
+        </label>
+    </fielset>
+    <fieldset class="form-group c-inputs-stacked">
+        <p>Select tools to run:</p>
+        <label class="c-input c-checkbox">
+            <input type="checkbox" checked>
+            <span class="c-indicator"></span> Tool A
+        </label>
+        <label class="c-input c-checkbox">
+            <input type="checkbox" checked>
+            <span class="c-indicator"></span> Tool B
+        </label>
+        <label class="c-input c-checkbox">
+            <input type="checkbox" checked>
+            <span class="c-indicator"></span> Tool C
+        </label>
+        <p>Select between these two tools:</p>
+        <label class="c-input c-radio">
+            <input id="radioStacked1" name="pickTool" type="radio">
+            <span class="c-indicator"></span> Tool D/1
+        </label>
+        <label class="c-input c-radio">
+            <input id="radioStacked2" name="pickTool" type="radio">
+            <span class="c-indicator"></span> Tool D/2
+        </label>
+    </fieldset>
+    <fieldset class="form-group c-inputs">
+        <p>Notifications:</p>
+        <label class="c-input c-checkbox">
+            <input type="checkbox">
+            <span class="c-indicator"></span> Email
+        </label>
+        <label class="c-input c-checkbox">
+            <input type="checkbox">
+            <span class="c-indicator"></span> Text
+        </label>
+<!--       fix in-line style -->
+        <input type="text" style="display: inline-block; width: 40%;" class="form-control" id="textNumber" placeholder="Enter your mobile number">
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Submit Job</button>
+</form>
+
+<hr>
+
+<h2>Hi, xyz</h2>
+<h3 class="text-center">Your Jobs</h3>
+<h4>Job A - processing</h4>
+<progress class="progress progress-success" value="37" max="100">37%</progress>
+<h4>Job B - paused</h4>
+<progress class="progress progress-warning" value="15" max="100">15%</progress>
+<h3>Update Settings</h3>
+<form>
+    email, name, ph number, default job settings
+</form>
+
+<hr>
+
+<h2>Job A</h2>
+<p>Completed on 23rd November 2015</p>
+<h3 class="h5">Input Files</h3>
+<p>xyz - 3232 kb, MD5: 9e107d9d372bb6826bd81d3542a419d6</p>
+<p>quv - 2342 kb, MD5: e4d909c290d0fb1ca068ffaddf22cbd0</p>
+<h3 class="h5">Output Files</h3>
+<p>Insert nested tree with download links</p>
+<div id="chart_div" style="width:400; height:300"></div>
+
+<!--Lazy loading broken - either avoid or add lazy loading compatibility-->
+<script type="text/javascript">
+          console.log("ready already");
+          // Load the Visualization API and the piechart package.
+          google.load('visualization', '1', {'packages':['corechart']});
+          
+          // Set a callback to run when the Google Visualization API is loaded.
+          google.setOnLoadCallback(drawChart);
+          // Callback that creates and populates a data table,
+          // instantiates the pie chart, passes in the data and
+          // draws it.
+          function drawChart() {
+
+          // Create the data table.
+            var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Topping');
+          data.addColumn('number', 'Slices');
+          data.addRows([
+            ['Mushrooms', 3],
+            ['Onions', 1],
+            ['Olives', 1],
+            ['Zucchini', 1],
+            ['Pepperoni', 2]
+          ]);
+
+          // Set chart options
+          var options = {'title':'How Much Pizza I Ate Last Night',
+                         'width':400,
+                         'height':300};
+
+          // Instantiate and draw our chart, passing in some options.
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+          }
+                            
+    </script>
