@@ -12,6 +12,6 @@ router.post('/register', function(req, res, next){
     }
     
     var user = new User();
-}
+});
 
 module.exports = router;

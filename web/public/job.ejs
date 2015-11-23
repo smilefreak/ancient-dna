@@ -1,0 +1,45 @@
+<h2>Job A</h2>
+<p>Completed on 23rd November 2015</p>
+<h3 class="h5">Input Files</h3>
+<p>xyz - 3232 kb, MD5: 9e107d9d372bb6826bd81d3542a419d6</p>
+<p>quv - 2342 kb, MD5: e4d909c290d0fb1ca068ffaddf22cbd0</p>
+<h3 class="h5">Output Files</h3>
+<p>Insert nested tree with download links</p>
+<div id="chart_div" style="width:400; height:300"></div>
+
+<!--Lazy loading broken - either avoid or add lazy loading compatibility-->
+<script type="text/javascript">
+          console.log("ready already");
+          // Load the Visualization API and the piechart package.
+          google.load('visualization', '1', {'packages':['corechart']});
+          
+          // Set a callback to run when the Google Visualization API is loaded.
+          google.setOnLoadCallback(drawChart);
+          // Callback that creates and populates a data table,
+          // instantiates the pie chart, passes in the data and
+          // draws it.
+          function drawChart() {
+
+          // Create the data table.
+            var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Topping');
+          data.addColumn('number', 'Slices');
+          data.addRows([
+            ['Mushrooms', 3],
+            ['Onions', 1],
+            ['Olives', 1],
+            ['Zucchini', 1],
+            ['Pepperoni', 2]
+          ]);
+
+          // Set chart options
+          var options = {'title':'How Much Pizza I Ate Last Night',
+                         'width':400,
+                         'height':300};
+
+          // Instantiate and draw our chart, passing in some options.
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+          }
+                            
+    </script>
