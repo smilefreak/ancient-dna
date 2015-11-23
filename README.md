@@ -2,13 +2,34 @@
 http://xn--o4c.xyz/  
 http://ฺ.xyz/  
 
+# Installation
+
+## Debian linux (Ubuntu)
+```
 wget -qO- https://deb.nodesource.com/setup_4.x | sudo bash -  
 sudo apt-get install --yes nodejs  
-npm install
+npm install  
+```
 
------
+## OSX 
 
-#web
+installation using homebrew.
+```
+brew install node 
+```
+
+# Testing
+
+Navigate to web directory and run node.
+
+```
+cd web 
+npm start
+```
+
+# Information
+
+##web
 - **models**: contains the information of the structure of database tables for the web side
 - **public**: any files that are public facing
   - **angularApp.js**: the main script run on the client side, uses Google's Angular library and handles translation from the directives in ejs files to html and routing.
