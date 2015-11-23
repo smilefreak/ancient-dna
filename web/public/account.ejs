@@ -1,8 +1,8 @@
 <h2>Hi, {{test}}</h2>
 <h3 class="text-center">Current Jobs</h3>
 <hr>
-<h4>Job A <span class="label label-success">Processing</span></h4>
-<progress class="progress progress-success" value="37" max="100">37%</progress>
+<h4>Job A <span class="label label-primary">Processing</span></h4>
+<progress class="progress" value="37" max="100">37%</progress>
 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#log0" aria-expanded="false" aria-controls="log0">
     View Log
 </button>
@@ -23,9 +23,75 @@
   </div>
 </div>
 <hr>
+<h4>Job C <span class="label label-danger">Failed</span></h4>
+<progress class="progress progress-danger" value="24" max="100">24%</progress>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#log2" aria-expanded="false" aria-controls="log2">
+    View Log
+</button>
+<div class="collapse" id="log2">
+  <div class="card card-block">
+    Insert log output here
+  </div>
+</div>
+<hr>
+<h4>Job Q <span class="label label-success">Complete</span></h4>
+<progress class="progress progress-success" value="100" max="100">24%</progress>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#log3" aria-expanded="false" aria-controls="log3">
+    View Log
+</button>
+<a class="btn btn-primary" href="/#/job/0/results">View Results</a>
+<div class="collapse" id="log3">
+  <div class="card card-block">
+    Insert log output here
+  </div>
+</div>
+<hr>
 <h3 class="text-center">Past Jobs</h3>
 <h4>testSample</h4>
+<hr>
 <h3>Update Settings</h3>
 <form>
-    email, name, ph number, default job settings
+    <fieldset class="form-group">
+        <label for="uName">Name</label>
+        <input type="text" class="form-control" id="uName" value="{{test}}">
+        <label for="uEmail">Email</label>
+        <input type="email" class="form-control" id="uName" value="test@test.com">
+        <label for="uPhone">Mobile Number</label>
+        <input type="tel" class="form-control" id="uPhone" value="0222222222">
+    </fieldset>
+    <fieldset class="form-group c-inputs-stacked">
+        <p>Default tools to run:</p>
+        <label class="c-input c-checkbox">
+            <input type="checkbox" checked>
+            <span class="c-indicator"></span> Tool A
+        </label>
+        <label class="c-input c-checkbox">
+            <input type="checkbox" checked>
+            <span class="c-indicator"></span> Tool B
+        </label>
+        <label class="c-input c-checkbox">
+            <input type="checkbox" checked>
+            <span class="c-indicator"></span> Tool C
+        </label>
+        <p>Default tool:</p>
+        <label class="c-input c-radio">
+            <input id="radioStacked1" name="pickTool" type="radio">
+            <span class="c-indicator"></span> Tool D/1
+        </label>
+        <label class="c-input c-radio">
+            <input id="radioStacked2" name="pickTool" type="radio">
+            <span class="c-indicator"></span> Tool D/2
+        </label>
+    </fieldset>
+    <fieldset class="form-group c-inputs">
+        <p>Default notifications:</p>
+        <label class="c-input c-checkbox">
+            <input type="checkbox">
+            <span class="c-indicator"></span> Email
+        </label>
+        <label class="c-input c-checkbox">
+            <input type="checkbox">
+            <span class="c-indicator"></span> Text
+        </label>
+    </fieldset>
 </form>
