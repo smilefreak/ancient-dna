@@ -1,0 +1,31 @@
+<hr>
+<div class="row">
+<div class="col-md-6 col-md-offset-3 highlight">
+    <div class="alert alert-danger" role="alert">
+        <strong>Oops!</strong> Sorry, we were unable to register your account at this time. Please try again later.
+    </div>
+    <div class="alert alert-warning" role="alert">
+        <strong>Oops!</strong> That email is already taken, try <a href="#" class="alert-link">logging in</a>, or <a href="#" class="alert-link">recovering your account</a>.
+    </div>
+    <form ng-submit="register()">
+        <fieldset class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="user">Email</label>
+            <input type="email" class="form-control" id="user" ng-model="user.user">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="pass">Password</label>
+            <input type="password" class="form-control" id="pass" ng-model="user.pass">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="cpass">Confirm Password</label>
+            <input type="password" class="form-control" id="cpass">
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+</div>
+<hr>

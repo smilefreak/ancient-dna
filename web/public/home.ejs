@@ -2,3 +2,118 @@
 
 
 <p class="h1">Put some homely stuff in here.</p>
+
+<hr>
+<div class="row">
+<div class="col-md-6 col-md-offset-3 highlight">
+    <div class="alert alert-danger" role="alert">
+      <strong>Oops!</strong> Sorry, we were unable to log you in at this time. Please try again later.
+    </div>
+    <div class="alert alert-danger" role="alert">
+        <strong>Oops!</strong> Sorry, we couldn't find an account with that email and password. Please either try again, use the <a href="#" class="alert-link">forgotten password utility</a> or <a href="#" class="alert-link">register for an account</a>.
+    </div>
+    <div class="alert alert-warning" role="alert">
+      Please <strong>confirm</strong> your email before logging in. <a href="#" class="alert-link">Resend confirmation message</a>.
+    </div>
+    <form>
+        <fieldset class="form-group">
+            <label for="user">Email</label>
+            <input type="email" class="form-control" id="user">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="pass">Password</label>
+            <input type="password" class="form-control" id="pass">
+        </fieldset>
+        <fieldset class="form-group">
+            <label class="c-input c-checkbox">
+                <input type="checkbox">
+                <span class="c-indicator"></span>
+                Stay logged in
+            </label>
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
+</div>
+<hr>
+<div class="row">
+<div class="col-md-6 col-md-offset-3 highlight">
+    <div class="alert alert-danger" role="alert">
+        <strong>Oops!</strong> Sorry, we were unable to register your account at this time. Please try again later.
+    </div>
+    <div class="alert alert-warning" role="alert">
+        <strong>Oops!</strong> That email is already taken, try <a href="#" class="alert-link">logging in</a>, or <a href="#" class="alert-link">recovering your account</a>.
+    </div>
+    <form ng-submit="register()">
+        <fieldset class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="user">Email</label>
+            <input type="email" class="form-control" id="user">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="pass">Password</label>
+            <input type="password" class="form-control" id="pass">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="cpass">Confirm Password</label>
+            <input type="password" class="form-control" id="cpass">
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+</div>
+<hr>
+<div class="row">
+<div class="col-md-6 col-md-offset-3 highlight">
+    <div class="alert alert-success" role="alert">
+      We've sent a recovery email to <strong>test@test.com</strong>, please check your inbox and follow the instructions.
+    </div>
+    <div class="alert alert-info" role="alert">
+      (Time-sensitive) <strong>Nothing yet?</strong> Remember to check your spam folder or <a href="#" class="alert-link">resend the recovery email</a>.
+    </div>
+    <form>
+        <fieldset class="form-group">
+            <label for="user">Email</label>
+            <input type="email" class="form-control" id="user">
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Send Recovery Email</button>
+    </form>
+</div>
+</div>
+<hr>
+<div class="row">
+<div class="col-md-6 col-md-offset-3 highlight">
+    <div class="alert alert-danger" role="alert">
+        <strong>Oops!</strong> Sorry, we were unable to change your password at this time. Please try again later.
+    </div>
+    <div class="alert alert-warning" role="alert">
+        <strong>Oops!</strong> Sorry, the old password you provided was incorrect. Please try again.
+    </div>
+    <div class="alert alert-success" role="alert">
+        <strong>Great</strong>, we've succesfully changed your password.
+    </div>
+    <div class="alert alert-info" role="alert">
+        <strong>Oops!</strong> You need to change your password before accessing your account.
+    </div>
+    <form>
+        <fieldset class="form-group">
+            <label for="opass">Old Password</label>
+            <input type="password" class="form-control" id="opass">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="pass">New Password</label>
+            <input type="password" class="form-control" id="pass">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="cpass">Confirm Password</label>
+            <input type="password" class="form-control" id="cpass">
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Change Password</button>
+    </form>
+</div>
+</div>
+<hr>
+

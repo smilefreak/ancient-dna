@@ -3,9 +3,8 @@ var Model = require('./models.js')
     // create username with username: user and 
     // password: user
     Model.User.create({
-      email: 'test@test.com',
-      password: '$2a$10$QaT1MdQ2DRWuvIxtNQ1i5O9D93HKwPKFNWBqiiuc/IoMtIurRCT36',
-      salt: '$2a$10$QaT1MdQ2DRWuvIxtNQ1i5O'
+      email: 'apple@test.com',
+      password: 'apple'
     }).then(function() {
         process.exit();
     })
