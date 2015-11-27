@@ -7,13 +7,12 @@ db = sqlalchemy.create_engine(connection_string)
 engine = db.connect()  
 meta = sqlalchemy.MetaData(engine)
 
-from sqlalchemy import Column, Integer, TIMESTAMP  
-from sqlalchemy.dialects.postgresql import JSON, JSONB
-from sqlalchemy.types import TIMESTAMP
+from sqlalchemy import Column, Integer, Text  
+from sqlalchemy.dialects.postgresql import JSONB
 
 jrTable = sqlalchemy.Table("job_results", meta,  
-                Column('jobID', Integer, primary_key=True),
-                #Column('completion_time', TIMESTAMP, server_default=func.now()),
+                Column('job_id', Integer, primary_key=True),
+                Column('base_path', Text),
                 Column('files', JSONB))
 meta.create_all()
 
@@ -38,7 +37,8 @@ for (dir, _, files) in os.walk(rootDir):
             insertAt[f] = os.path.getsize(path)
 
 statement = jrTable.insert().values(
-        jobID=9001,
+        job_id=9001,
+        base_path=rootDir,
         files=resultFiles
     )
 
