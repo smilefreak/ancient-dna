@@ -48,4 +48,23 @@ router.post('/login', function(req, res, next){
     })(req, res, next);
 });
 
+router.param('jNo', function(req, res, next, jNo){
+  Model.Results.findOne({
+      where: { 
+          job_id: jNo 
+      } 
+  }).then(function(results){
+      if(!results) { return next(new Error('Can\'t find job')); }
+      req.results = results;
+      return next();
+  }).catch(function(error) {
+      req.flash('error', "Something went wrong!")
+      res.redirect('/home')
+  });
+});
+
+router.get('/job/:jNo/fetchResults', function(req, res, next){
+  res.json(req.results);
+});
+
 module.exports = router;
