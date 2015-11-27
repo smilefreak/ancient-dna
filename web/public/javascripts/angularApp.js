@@ -25,6 +25,11 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 url: '/job/{jNo}/results',
                 templateUrl: '/results.ejs',
                 controller: 'JobCtrl',
+                resolve: {
+                    jobResults: ['$stateParams', 'jobs', function($stateParams, jobs){
+                        return jobs.getResults($stateParams.jNo);
+                    }]
+                }
             })
             .state('login', {
               url: '/login',
@@ -59,9 +64,11 @@ app.controller('MainCtrl', ['$scope', 'auth',
         $scope.loggedIn = auth.isLoggedIn;
     }
 ])
-.controller('JobCtrl', ['$scope', '$stateParams',
-    function($scope, $stateParams){
-        $scope.jNo = $stateParams.jNo;   
+.controller('JobCtrl', ['$scope', '$stateParams', 'jobs', 'jobResults',
+    function($scope, $stateParams, jobs, jobResults){
+        console.log(jobResults);
+        $scope.jobResults = jobResults;
+        $scope.jNo = jobResults.job_id;
     }
 ])
 .controller('AuthCtrl', ['$scope', '$state', 'auth', function($scope, $state, auth){
@@ -128,4 +135,13 @@ app.factory('auth', ['$http', '$window', function($http, $window){
   }
 
   return auth;
+}])
+.factory('jobs', ['$http', function($http){
+    var o = {};
+    o.getResults = function(jNo){
+        return $http.get('/job/' + jNo + '/fetchResults').then(function(res){
+            return res.data;   
+        });
+    };
+    return o;
 }])
