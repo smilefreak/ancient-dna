@@ -67,7 +67,32 @@ app.controller('MainCtrl', ['$scope', 'auth',
 .controller('JobCtrl', ['$scope', '$stateParams', 'jobs', 'jobResults',
     function($scope, $stateParams, jobs, jobResults){
         console.log(jobResults);
-        $scope.jobResults = jobResults;
+//        $scope.jobResults = jobResults;
+        var x = { name: jobResults.base_path };
+        iterateNodes = function(data, depth, curNode) {
+            Object.keys(data).forEach(function(key){
+                if(typeof data[key] === 'number'){
+                    if(!curNode.curLevel){
+                        curNode.curLevel = [];   
+                    }
+                    curNode.curLevel.push({
+                        name: key,
+                        size: data[key],
+                        depth: depth
+                    });
+                } else {
+                    if(!curNode.nextLevel){
+                        curNode.nextLevel = [];   
+                    }
+                    var q = { name: key };
+                    curNode.nextLevel.push(q);
+                    iterateNodes(data[key], depth+1, q);   
+                }
+            });
+        };
+        iterateNodes(jobResults.files, 0, x);
+        console.log(x);
+        $scope.level = x;
         $scope.jNo = jobResults.job_id;
     }
 ])
