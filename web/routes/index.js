@@ -23,7 +23,7 @@ router.post('/register', function(req, res, next){
     }).then(function(user) {
         return res.json({token: user.jwt })
     }).catch(function(error) {
-        req.flash('error', "Please, choose a different username.")
+        //req.flash('error', "Please, choose a different username.")
         res.redirect('/signup')
     });
     
@@ -58,13 +58,32 @@ router.param('jNo', function(req, res, next, jNo){
       req.results = results;
       return next();
   }).catch(function(error) {
-      req.flash('error', "Something went wrong!")
+      //req.flash('error', "Something went wrong!")
       res.redirect('/home')
   });
 });
 
 router.get('/job/:jNo/fetchResults', function(req, res, next){
   res.json(req.results);
+});
+
+router.get('/job/:jNo/get/:downloadType/*?', function(req, res, next){
+  switch(req.params.downloadType){
+    case 'f':
+      console.log('f');
+      break;
+    case 't':
+      console.log('t');
+      break;
+    case 'z':
+      console.log('z');
+      break;
+    default:
+      req.flash('error', "Errenous download type");
+      res.redirect('/home');
+  }
+  
+  res.json({ test: req.params[0] });
 });
 
 module.exports = router;
