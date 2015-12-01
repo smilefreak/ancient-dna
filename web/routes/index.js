@@ -17,14 +17,16 @@ router.post('/register', function(req, res, next){
         console.log("error:" + req.body.user + "  " + req.body.pass);
         return res.status(400).json({message: 'Please fill out all fields.'});
     }
+  console.log(req.body.name);
     Model.User.create({
+      name: req.body.name,
       email: req.body.user,
       password: req.body.pass
     }).then(function(user) {
         return res.json({token: user.jwt })
     }).catch(function(error) {
         //req.flash('error', "Please, choose a different username.")
-        res.redirect('/signup')
+        res.redirect('/register')
     });
     
 });
@@ -34,7 +36,7 @@ router.post('/login', function(req, res, next){
         return res.status(400).json({ message: 'Please fill out all fields'});   
     }
     
-    passport.authenicate('local', function(err, user, info){
+    passport.authenticate('local', function(err, user, info){
         if(err){
             return next(err);
         }
