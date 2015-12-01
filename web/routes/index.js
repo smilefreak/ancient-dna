@@ -17,14 +17,16 @@ router.post('/register', function(req, res, next){
         console.log("error:" + req.body.user + "  " + req.body.pass);
         return res.status(400).json({message: 'Please fill out all fields.'});
     }
+  console.log(req.body.name);
     Model.User.create({
+      name: req.body.name,
       email: req.body.user,
       password: req.body.pass
     }).then(function(user) {
         return res.json({token: user.jwt })
     }).catch(function(error) {
-        req.flash('error', "Please, choose a different username.")
-        res.redirect('/signup')
+        //req.flash('error', "Please, choose a different username.")
+        res.redirect('/register')
     });
     
 });
@@ -34,7 +36,7 @@ router.post('/login', function(req, res, next){
         return res.status(400).json({ message: 'Please fill out all fields'});   
     }
     
-    passport.authenicate('local', function(err, user, info){
+    passport.authenticate('local', function(err, user, info){
         if(err){
             return next(err);
         }
@@ -58,13 +60,32 @@ router.param('jNo', function(req, res, next, jNo){
       req.results = results;
       return next();
   }).catch(function(error) {
-      req.flash('error', "Something went wrong!")
+      //req.flash('error', "Something went wrong!")
       res.redirect('/home')
   });
 });
 
 router.get('/job/:jNo/fetchResults', function(req, res, next){
   res.json(req.results);
+});
+
+router.get('/job/:jNo/get/:downloadType/*?', function(req, res, next){
+  switch(req.params.downloadType){
+    case 'f':
+      console.log('f');
+      break;
+    case 't':
+      console.log('t');
+      break;
+    case 'z':
+      console.log('z');
+      break;
+    default:
+      req.flash('error', "Errenous download type");
+      res.redirect('/home');
+  }
+  
+  res.json({ test: req.params[0] });
 });
 
 module.exports = router;

@@ -62,6 +62,7 @@ app.controller('MainCtrl', ['$scope', 'auth',
         $scope.test = 'test123';
         $scope.currentUser = auth.currentUser;
         $scope.loggedIn = auth.isLoggedIn;
+        $scope.logout = auth.logOut;
     }
 ])
 .controller('JobCtrl', ['$scope', '$stateParams', 'jobs', 'jobResults',
@@ -112,7 +113,7 @@ app.controller('MainCtrl', ['$scope', 'auth',
     auth.logIn($scope.user).error(function(error){
       $scope.error = error;
     }).then(function(){
-      $state.go('home');
+      $state.go('account');
     });
   };
 }])
@@ -129,7 +130,6 @@ app.factory('auth', ['$http', '$window', function($http, $window){
   auth.isLoggedIn = function(){
     var token = auth.getToken();
     if(token){
-        console.log("we have an expired token?!");
       var payload = JSON.parse($window.atob(token.split('.')[1]));
         console.log(payload);
       return payload.exp > Date.now() /1000;
@@ -138,12 +138,12 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     }
   }
   auth.currentUser = function(){
-    //if(auth.isLoggedIn()){
+    if(auth.isLoggedIn()){
       var token = auth.getToken();
       var payload = JSON.parse($window.atob(token.split('.')[1]));
 
-      return payload.email;
-    //}
+      return payload.name;
+    }
   }
   auth.register = function(user){
     return $http.post('/register', user).success(function(data){

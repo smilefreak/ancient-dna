@@ -3,11 +3,15 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
 var attributes = {
+  name: {
+    type: Sequelize.STRING
+  },
   email: {
     type: Sequelize.STRING,
     validate: {
       isEmail: true
-    }
+    },
+    primaryKey: true
   },
   password: {
     type: Sequelize.STRING,
@@ -30,7 +34,9 @@ var options = {
             exp.setDate(today.getDate() + 60);
             
             return jwt.sign({
-                email: this.email
+                name: this.name,
+                email: this.email,
+                exp: parseInt(exp.getTime() / 1000)
             }, 'SECRET');
         }
     }

@@ -10,10 +10,11 @@ passport.use(new LocalStrategy({
     function (username, password, done) {
         Model.User.findOne({
             where: {
-                'username': username
+                'email': username
             }
         }).then(function (user) {
             if (user == null) {
+              console.log("incorrect user");
                 return done(null, false, {
                     message: 'Incorrect username.'
                 });
@@ -21,6 +22,7 @@ passport.use(new LocalStrategy({
             var hPassword = crypto.pbkdf2Sync(password, user.salt, 1000, 64).toString('hex');
             
             if (user.password !== hPassword) {
+              console.log("incorrect pass");
                 return done(null, false, {
                     message: 'Incorrect password.'
                 });
