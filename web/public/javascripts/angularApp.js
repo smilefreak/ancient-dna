@@ -103,9 +103,15 @@ app.controller('MainCtrl', ['$scope', 'auth',
   $scope.register = function(){
     console.log("Attempting to register");
     auth.register($scope.user).error(function(error){
-      $scope.error = error;
+      if(error.errors){
+        $scope.error = error.errors[0].message;
+      } else {
+        $scope.error = error; 
+      }
+      console.log(error);
     }).then(function(){
-      $state.go('home');
+      $('#registerModal').modal('hide');
+      $state.go('account');
     });
   };
 
@@ -113,6 +119,7 @@ app.controller('MainCtrl', ['$scope', 'auth',
     auth.logIn($scope.user).error(function(error){
       $scope.error = error;
     }).then(function(){
+      $('#loginModal').modal('hide');
       $state.go('account');
     });
   };

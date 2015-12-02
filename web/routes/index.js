@@ -14,10 +14,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/register', function(req, res, next){
     if(!req.body.user || !req.body.pass){
-        console.log("error:" + req.body.user + "  " + req.body.pass);
         return res.status(400).json({message: 'Please fill out all fields.'});
     }
-  console.log(req.body.name);
     Model.User.create({
       name: req.body.name,
       email: req.body.user,
@@ -26,7 +24,7 @@ router.post('/register', function(req, res, next){
         return res.json({token: user.jwt })
     }).catch(function(error) {
         //req.flash('error', "Please, choose a different username.")
-        res.redirect('/register')
+        return res.status(400).json(error)
     });
     
 });
@@ -42,7 +40,7 @@ router.post('/login', function(req, res, next){
         }
         if(user){
             return res.json({
-                token: user.jwt   
+                token: user.jwt
             });
         } else {
             return res.status(401).json(info);
