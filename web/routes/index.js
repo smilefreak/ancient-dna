@@ -51,7 +51,7 @@ router.post('/login', function(req, res, next){
 router.param('jNo', function(req, res, next, jNo){
   Model.Results.findOne({
       where: { 
-          job_id: jNo 
+          id: jNo 
       } 
   }).then(function(results){
       if(!results) { return next(new Error('Can\'t find job')); }

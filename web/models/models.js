@@ -11,8 +11,12 @@ var Job = connection.define('job', JobMeta.attributes, JobMeta.options)
 var Sample = connection.define('sample', SampleMeta.attributes, SampleMeta.options)
 var JobSamples = connection.define('job_samples', JobSamplesMeta.attributes, JobSamplesMeta.options)
 
-Job.hasMany(Sample, { through: JobSamples })
-Sample.hasMany(Job, { through: JobSamples })
+Job.belongsToMany(Sample, { through: JobSamples })
+Sample.belongsToMany(Job, { through: JobSamples })
+Results.belongsTo(Job, { foreignKey: "id" })
 
 module.exports.User = User
 module.exports.Results = Results
+module.exports.Job = Job
+module.exports.Sample = Sample
+module.exports.JobSamples = JobSamples

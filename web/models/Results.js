@@ -1,9 +1,11 @@
 var Sequelize = require('sequelize')
 
 var attributes = {
-    job_id: {
+    id: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        references: "job",
+        key: "id"
     },
     base_path: {
         type: Sequelize.TEXT  
@@ -14,8 +16,7 @@ var attributes = {
 }
 
 var options = {
-    freezeTableName: true,
-    timestamps: false
+    freezeTableName: true
 }
 
 module.exports.attributes = attributes

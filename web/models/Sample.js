@@ -9,7 +9,8 @@ var attributes = {
     type: Sequelize.STRING 
   },
   size: {
-    type: Sequelize.NUMBER
+    type: Sequelize.INTEGER,
+    unsigned: true
   },
   uploader: {
     type: Sequelize.STRING 
