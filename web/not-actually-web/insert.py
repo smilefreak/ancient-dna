@@ -11,7 +11,7 @@ meta = sqlalchemy.MetaData(engine)
 from sqlalchemy import Column, Integer, Text, DateTime
 from sqlalchemy.dialects.postgresql import JSONB
 
-jrTable = sqlalchemy.Table("job_results", meta,  
+jrTable = sqlalchemy.Table("results", meta,  
                 Column('id', Integer, primary_key=True),
                 Column('base_path', Text),
                 Column('files', JSONB),
@@ -40,7 +40,7 @@ for (dir, _, files) in os.walk(rootDir):
             insertAt[f] = os.path.getsize(path)
 
 statement = jrTable.insert().values(
-        id=2,
+        id=1,
         base_path=rootDir,
         files=resultFiles
     )

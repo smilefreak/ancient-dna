@@ -86,4 +86,23 @@ router.get('/job/:jNo/get/:downloadType/*?', function(req, res, next){
   res.json({ test: req.params[0] });
 });
 
+router.get('/account', auth, function(req, res, next){
+    console.log('Finding all jobs for given user');
+    Model.User.findOne({
+      where: {
+        email: req.payload.email
+      }
+    }).then(function(user){
+      user.getJobs().then(function(results){
+        res.json({ 
+          results: results 
+        });
+      }).catch(function(error){
+        res.redirect('/home')
+      });
+    }).catch(function(error){
+      res.redirect('/home')
+    });
+});
+
 module.exports = router;

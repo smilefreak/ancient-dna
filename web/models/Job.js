@@ -14,6 +14,17 @@ var attributes = {
   },
   params: {
     type: Sequelize.JSONB
+  },
+  status: {
+    type: Sequelize.ENUM('Processing', 'Complete', 'Failed', 'Paused', 'UNKNOWN'),
+    defaultValue: 'Processing',
+    allowNull: false
+  },
+  progress: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+    allowNull: false,
+    validate: { min: 0, max: 100 }
   }
 }
 

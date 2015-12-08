@@ -1,5 +1,6 @@
 <h2>Hi, {{currentUser()}} ({{loggedIn()}})</h2>
 <h3 class="text-center">Current Jobs</h3>
+{{accountJobs}}
 <hr>
 <h4>Job A <span class="label label-primary">Processing</span></h4>
 <progress class="progress" value="37" max="100">37%</progress>
@@ -39,7 +40,7 @@
 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#log3" aria-expanded="false" aria-controls="log3">
     View Log
 </button>
-<a class="btn btn-primary" href="/#/job/2/results">View Results</a>
+<a class="btn btn-primary" href="/#/job/1/results">View Results</a>
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDelete">Delete</button>
 <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
