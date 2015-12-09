@@ -72,7 +72,19 @@ app.controller('MainCtrl', ['$scope', 'auth',
 ])
 .controller('AccCtrl', ['$scope', 'accountJobs',
     function($scope, accountJobs){
-      console.log(accountJobs);
+      var oldJobDate = new Date();
+      $scope.oldJobs = [];
+      $scope.curJobs = [];
+      oldJobDate.setDate(oldJobDate.getDate() - 14);
+      accountJobs.results.forEach(function(job){
+          if(new Date(job.updatedAt) > oldJobDate){
+            $scope.curJobs.push(job);
+          }else{
+            $scope.oldJobs.push(job);
+          }
+      });
+      console.log($scope.curJobs);
+      console.log($scope.oldJobs);
       $scope.accountJobs = accountJobs;
     }
 ])
@@ -149,7 +161,6 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     var token = auth.getToken();
     if(token){
       var payload = JSON.parse($window.atob(token.split('.')[1]));
-        console.log(payload);
       return payload.exp > Date.now() /1000;
     }else{
       return false;
