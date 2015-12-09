@@ -37,7 +37,7 @@ for (dir, _, files) in os.walk(rootDir):
             insertAt[f] = os.path.getsize(path)
 
 statement = jrTable.insert().values(
-        job_id=9001,
+        id=1,
         base_path=rootDir,
         files=resultFiles
     )

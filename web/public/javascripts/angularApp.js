@@ -18,7 +18,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
             .state('account', {
                 url: '/account',
                 templateUrl: '/account.ejs',
-                controller: 'MainCtrl'
+                controller: 'AccCtrl',
+                resolve: {
+                  accountJobs: ['jobs', function(jobs){
+                    return jobs.getAccJobs()
+                  }]
+                }
             })
         //add jobNo is real job at later points
             .state('jobResults', {
@@ -65,6 +70,24 @@ app.controller('MainCtrl', ['$scope', 'auth',
         $scope.logout = auth.logOut;
     }
 ])
+.controller('AccCtrl', ['$scope', 'accountJobs',
+    function($scope, accountJobs){
+      var oldJobDate = new Date();
+      $scope.oldJobs = [];
+      $scope.curJobs = [];
+      oldJobDate.setDate(oldJobDate.getDate() - 14);
+      accountJobs.results.forEach(function(job){
+          if(new Date(job.updatedAt) > oldJobDate){
+            $scope.curJobs.push(job);
+          }else{
+            $scope.oldJobs.push(job);
+          }
+      });
+      console.log($scope.curJobs);
+      console.log($scope.oldJobs);
+      $scope.accountJobs = accountJobs;
+    }
+])
 .controller('JobCtrl', ['$scope', '$stateParams', 'jobs', 'jobResults',
     function($scope, $stateParams, jobs, jobResults){
         console.log(jobResults);
@@ -94,7 +117,7 @@ app.controller('MainCtrl', ['$scope', 'auth',
         iterateNodes(jobResults.files, 0, x);
         console.log(x);
         $scope.level = x;
-        $scope.jNo = jobResults.job_id;
+        $scope.jNo = jobResults.id;
     }
 ])
 .controller('AuthCtrl', ['$scope', '$state', 'auth', function($scope, $state, auth){
@@ -103,9 +126,15 @@ app.controller('MainCtrl', ['$scope', 'auth',
   $scope.register = function(){
     console.log("Attempting to register");
     auth.register($scope.user).error(function(error){
-      $scope.error = error;
+      if(error.errors){
+        $scope.error = error.errors[0].message;
+      } else {
+        $scope.error = error; 
+      }
+      console.log(error);
     }).then(function(){
-      $state.go('home');
+      $('#registerModal').modal('hide');
+      $state.go('account');
     });
   };
 
@@ -113,6 +142,7 @@ app.controller('MainCtrl', ['$scope', 'auth',
     auth.logIn($scope.user).error(function(error){
       $scope.error = error;
     }).then(function(){
+      $('#loginModal').modal('hide');
       $state.go('account');
     });
   };
@@ -131,7 +161,6 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     var token = auth.getToken();
     if(token){
       var payload = JSON.parse($window.atob(token.split('.')[1]));
-        console.log(payload);
       return payload.exp > Date.now() /1000;
     }else{
       return false;
@@ -161,11 +190,20 @@ app.factory('auth', ['$http', '$window', function($http, $window){
 
   return auth;
 }])
-.factory('jobs', ['$http', function($http){
+.factory('jobs', ['$http', 'auth', function($http, auth){
     var o = {};
     o.getResults = function(jNo){
         return $http.get('/job/' + jNo + '/fetchResults').then(function(res){
             return res.data;   
+        });
+    };
+    o.getAccJobs = function(){
+        return $http.get('/account', {
+          headers: {
+            Authorization: 'Bearer '+ auth.getToken()
+          }
+        }).then(function(res){
+            return res.data;
         });
     };
     return o;

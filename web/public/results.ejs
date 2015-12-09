@@ -35,7 +35,7 @@
 
 <script type="text/javascript">
     //Fix sync req
-    var hcURL = "http://code.highcharts.com/highcharts.js";
+    var hcURL = "https://code.highcharts.com/highcharts.js";
     var hcBoostURL = "https://rawgit.com/highslide-software/highcharts.com/master/js/modules/boost.src.js";
     /*$.when(
       $.getScript(hcURL),
@@ -52,14 +52,27 @@
             dataType: "text",
             success: function(data){
                 var lines = data.split('\n');
-                var processedData = [];
+                var processedData;
+              
+                while(true){
+                  var temp = lines.pop().split("\t");
+                  var x = parseInt(temp[1]);
+                  if(!isNaN(x)){
+                    processedData = new Array(x);
+                    var i = 0;
+                    while(i < x){
+                      processedData[i++] = [i, 0]; 
+                    }
+                    processedData[x-1][1] = parseInt(temp[3]);
+                    break;
+                  }
+                }
                 $.each(lines, function(){
-                     var temp = this.split("\t");
-                     processedData.push([parseInt(temp[1]), parseInt(temp[3])]);
+                    var temp = this.split("\t");
+                    processedData[parseInt(temp[1])][1] = parseInt(temp[3]);
                 });
                 console.log(processedData);
                 //This pop is only needed because last value was not correctly parsed
-                processedData.pop();
                 $('#container').highcharts({
                     chart: {
                         type: 'area',
