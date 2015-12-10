@@ -77,6 +77,23 @@ app.controller('MainCtrl', ['$scope', 'auth',
       $scope.curJobs = [];
       oldJobDate.setDate(oldJobDate.getDate() - 14);
       accountJobs.results.forEach(function(job){
+          switch(job.status){
+            case "Complete":
+              job.labelStyle = "btn-success";
+              job.progressStyle = "progress-success";
+              break;
+            case "Processing":
+              job.labelStyle = "btn-primary";
+              break;
+            case "Paused":
+              job.labelStyle = "btn-warning";
+              job.progressStyle = "progress-warning";
+              break;
+            case "Failed":
+              job.labelStyle = "btn-danger";
+              job.progressStyle = "progress-danger";
+              break;
+          }
           if(new Date(job.updatedAt) > oldJobDate){
             $scope.curJobs.push(job);
           }else{
