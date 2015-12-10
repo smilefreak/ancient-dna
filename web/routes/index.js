@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var jwt = require('express-jwt');
 var Model = require('../models/models.js')
+var archiver = require('archiver');
 
 //Hardcoded secret should be moved to a seperate file
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
@@ -67,24 +68,40 @@ router.get('/job/:jNo/fetchResults', function(req, res, next){
   res.json(req.results);
 });
 
+//Danger - prevent directory traversal
+/*
 router.get('/job/:jNo/get/:downloadType/*?', function(req, res, next){
   switch(req.params.downloadType){
     case 'f':
       console.log('f');
-      break;
+      return;
     case 't':
-      console.log('t');
+      var archiveType = "zip"; 
       break;
     case 'z':
-      console.log('z');
+      var archiveType = "tar";
       break;
     default:
-      req.flash('error', "Errenous download type");
       res.redirect('/home');
   }
   
-  res.json({ test: req.params[0] });
-});
+  var archive = archiver(archiveType, { store: true });
+  
+  archive.on('error', function(err) {
+    console.log(err.message);
+    res.status(500).send({error: err.message});
+  });
+
+  archive.on('end', function() {
+    console.log('Archive wrote %d bytes', archive.pointer());
+  });
+
+  res.attachment('test.' + archiveType);
+  
+  archive.pipe(res);
+  archive.directory(req.params[0], false);
+  archive.finalize();
+});*/
 
 router.get('/account', auth, function(req, res, next){
     console.log('Finding all jobs for given user');
