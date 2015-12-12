@@ -12,7 +12,7 @@
       Insert log output here
     </div>
   </div>
-  <a class="btn btn-primary" href="/#/job/{{job.id}}/results">View Results</a>
+  <a class="btn btn-primary" href="/#/job/{{job.id}}/results" ng-show="job.progress > 50">View Results</a>
   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDelete" ng-show="job.status === 'Complete'">Delete</button>
 </div>
 <hr>
