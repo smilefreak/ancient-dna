@@ -13,7 +13,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
             .state('newJob', {
                 url: '/newJob',
                 templateUrl: '/newJob.ejs',
-                controller: 'MainCtrl'
+                controller: 'NewJobCtrl'
             })
             .state('account', {
                 url: '/account',
@@ -29,7 +29,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
             .state('jobResults', {
                 url: '/job/{jNo}/results',
                 templateUrl: '/results.ejs',
-                controller: 'JobCtrl',
+                controller: 'ResultCtrl',
                 resolve: {
                     jobResults: ['$stateParams', 'jobs', function($stateParams, jobs){
                         return jobs.getResults($stateParams.jNo);
@@ -70,6 +70,23 @@ app.controller('MainCtrl', ['$scope', 'auth',
         $scope.logout = auth.logOut;
     }
 ])
+.controller('NewJobCtrl', ['$scope', 'jobs',
+    function($scope, jobs){
+        $scope.addJob = function(){
+          console.log("Attempting to add job");
+          jobs.addJob($scope.nJob).error(function(error){
+            if(error.errors){
+              $scope.error = error.errors[0].message;
+            } else {
+              $scope.error = error; 
+            }
+            console.log(error);
+          }).then(function(){
+            $state.go('account');
+          });
+        }
+    }
+])
 .controller('AccCtrl', ['$scope', 'accountJobs',
     function($scope, accountJobs){
       var oldJobDate = new Date();
@@ -105,7 +122,7 @@ app.controller('MainCtrl', ['$scope', 'auth',
       $scope.accountJobs = accountJobs;
     }
 ])
-.controller('JobCtrl', ['$scope', '$stateParams', 'jobs', 'jobResults',
+.controller('ResultCtrl', ['$scope', '$stateParams', 'jobs', 'jobResults',
     function($scope, $stateParams, jobs, jobResults){
         console.log(jobResults);
 //        $scope.jobResults = jobResults;
@@ -222,6 +239,13 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         }).then(function(res){
             return res.data;
         });
+    };
+    o.addJob = function(job){
+      return $http.post('/newJob', job, {
+        headers: {
+          Authorization: 'Bearer ' + auth.getToken()                
+        }              
+      });
     };
     return o;
 }])
