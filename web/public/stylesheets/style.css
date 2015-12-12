@@ -2,3 +2,7 @@
     background-color: #f7f7f9;
     padding: 1rem;
 }
+
+#fileManager .btn-link{
+  cursor: pointer;
+}

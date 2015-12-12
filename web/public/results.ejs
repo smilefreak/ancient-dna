@@ -101,8 +101,8 @@
     });
 </script>
 <script type="text/ng-template" id="fileTree">
-    <li ng-if="level.nextLevel" id="ft-{{level.name}}"><button data-toggle="collapse" href="#ft-{{level.name}} ul" class="btn btn-link" type="button">{{level.name}}</button>
-        <ul>
+    <li ng-if="level.nextLevel" id="ft-{{level.name}}"><span data-toggle="collapse" data-target="#ft-{{level.name}} ul" class="btn-link">{{level.name}}</span>
+        <ul class="collapse in">
             <li ng-repeat="level in level.nextLevel" ng-include="'fileTree'">           
             </li>
         </ul>
