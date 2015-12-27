@@ -118,7 +118,7 @@ def dbListener():
   print("Waiting for notifications on channel 'adna_process'")
   while 1:
     if select.select([conn],[],[],5) == ([],[],[]):
-      print("Timeout")
+      print("0")
     else:
       conn.poll()
       while conn.notifies:
@@ -127,7 +127,7 @@ def dbListener():
         if notify.payload[0] == "s":
           loop.create_task(loop.subprocess_exec(SubprocessProtocol, 
         "python3.5", "simul.py", notify.payload[1:]))
-    yield from asyncio.sleep(10)
+    yield from asyncio.sleep(60)
 
 def main():
   init_conn()

@@ -48,7 +48,7 @@ router.post('/newJob', auth, function (req, res, next) {
 router.post('/register', function (req, res, next) {
   if (!req.body.user || !req.body.pass) {
     return res.status(400).json({
-      message: 'Please fill out all fields.'
+      incomplete: true
     });
   }
   Model.User.create({
@@ -60,8 +60,18 @@ router.post('/register', function (req, res, next) {
       token: user.jwt
     })
   }).catch(function (error) {
-    //req.flash('error', "Please, choose a different username.")
-    return res.status(400).json(error)
+    rJson = {}
+    //Change to switch for more than one error check
+    if(error.errors){
+      error.errors.forEach(function(err){
+        if(err.message == 'email must be unique'){
+          rJson.unique = true;
+        }
+      });
+    } else {
+      rJson.default = true;
+    }
+    return res.status(400).json(rJson)
   });
 
 });
@@ -69,7 +79,7 @@ router.post('/register', function (req, res, next) {
 router.post('/login', function (req, res, next) {
   if (!req.body.user || !req.body.pass) {
     return res.status(400).json({
-      message: 'Please fill out all fields'
+      incomplete: true
     });
   }
 
@@ -82,7 +92,16 @@ router.post('/login', function (req, res, next) {
         token: user.jwt
       });
     } else {
-      return res.status(401).json(info);
+      rJson = {}
+      switch(info.message){
+        case 'Incorrect username.':
+        case 'Incorrect password.':
+          rJson.incorrect = true;
+          break;
+        default:
+          rJson.default = true;
+      }
+      return res.status(401).json(rJson);
     }
   })(req, res, next);
 });

@@ -7,8 +7,8 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>Ancient DNA</title>
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css' />
   <link rel='stylesheet' href='stylesheets/style.css'>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css' />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
@@ -17,8 +17,16 @@
 
 
 <!-- Remove ng-controller via ui-router code -->
-
-<body ng-app="ancientDNA" ng-controller="MainCtrl" class="container" style="padding-top: 0px;">
+<!-- ng-show="loadwheel"-->
+<!--TODO: Loading wheel for $http requests too, ext: sub loading wheel for $http req-->
+<body ng-app="ancientDNA" ng-controller="MainCtrl">
+  <div id="mainWheel" ng-show="loadWheel">
+    <div class="loader">
+      <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+      </svg>
+    </div>
+  </div>
   <div ng-controller="AuthCtrl">
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -31,16 +39,16 @@
             <h4 class="modal-title" id="myModalLabel">Register</h4>
           </div>
           <div class="modal-body">
-            <!--
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger" role="alert" ng-show="message.r.default">
               <strong>Oops!</strong> Sorry, we were unable to register your account at this time. Please try again later.
             </div>
-            <div class="alert alert-warning" role="alert">
+            <div class="alert alert-warning" role="alert" ng-show="message.r.unique">
               <strong>Oops!</strong> That email is already taken, try <a href="#" class="alert-link">logging in</a>, or <a href="#" class="alert-link">recovering your account</a>.
             </div>
--->
+            <div class="alert alert-warning" role="alert" ng-show="message.r.incomplete">
+              One or more required fields weren't correctly filled in. Please ensure all required fields are correctly filled in.
+            </div>
             <form ng-submit="register()">
-              {{error}}
               <fieldset class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" ng-model="user.name">
@@ -77,17 +85,18 @@
             <h4 class="modal-title" id="myModalLabel">Login</h4>
           </div>
           <div class="modal-body">
-            <!--
-          <div class="alert alert-danger" role="alert">
-            <strong>Oops!</strong> Sorry, we were unable to log you in at this time. Please try again later.
-          </div>
-          <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger" role="alert" ng-show="message.l.default">
+              <strong>Oops!</strong> Sorry, we were unable to log you in at this time. Please try again later.
+            </div>
+            <div class="alert alert-danger" role="alert" ng-show="message.l.incorrect">
               <strong>Oops!</strong> Sorry, we couldn't find an account with that email and password. Please either try again, use the <a href="#" class="alert-link">forgotten password utility</a> or <a href="#" class="alert-link">register for an account</a>.
-          </div>
-          <div class="alert alert-warning" role="alert">
-            Please <strong>confirm</strong> your email before logging in. <a href="#" class="alert-link">Resend confirmation message</a>.
-          </div>
--->
+            </div>
+            <div class="alert alert-warning" role="alert" ng-show="message.l.confirm">
+              Please <strong>confirm</strong> your email before logging in. <a href="#" class="alert-link">Resend confirmation message</a>.
+            </div>
+            <div class="alert alert-warning" role="alert" ng-show="message.l.incomplete">
+              Please ensure both email and password are correctly filled in.
+            </div>
             <form ng-submit="logIn()">
               {{error}}
               <fieldset class="form-group">
@@ -114,7 +123,7 @@
       </div>
     </div>
   </div>
-  <nav class="navbar navbar-dark bg-inverse">
+  <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
     <a class="navbar-brand" href="#/home">Ancient DNA</a>
     <ul class="nav navbar-nav">
       <li ui-sref="home" ui-sref-active="active" class="nav-item">
@@ -139,7 +148,7 @@
       <button type="button" class="btn btn-primary" ng-show="loggedIn()" ng-click="logout()">Logout</button>
     </form>
   </nav>
-  <div>
+  <div class="container">
     <ui-view></ui-view>
   </div>
   <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>

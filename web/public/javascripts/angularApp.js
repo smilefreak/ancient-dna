@@ -62,12 +62,35 @@ app.config(['$stateProvider', '$urlRouterProvider',
 
 
 
-app.controller('MainCtrl', ['$scope', 'auth',
-    function ($scope, auth) {
+app.controller('MainCtrl', ['$scope', '$timeout', 'auth',
+    function ($scope, $timeout, auth) {
       $scope.test = 'test123';
+      //      if(!$scope.messages){
+      //        $scope.messages = {};
+      //      }
       $scope.currentUser = auth.currentUser;
       $scope.loggedIn = auth.isLoggedIn;
       $scope.logout = auth.logOut;
+      $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        if (toState.resolve) {
+          $scope.loadWheel = true;
+        }
+      });
+      $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        if (toState.resolve) {
+          $timeout(function () {
+            $scope.loadWheel = false;
+          }, 1000);
+        }
+      });
+      $scope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+        if (toState.resolve) {
+          $timeout(function () {
+            $scope.loadWheel = false;
+          }, 1000);
+          //add error wheel and present error to user, add fade
+        }
+      });
     }
 ])
   .controller('NewJobCtrl', ['$scope', '$state', 'jobs',
@@ -127,7 +150,7 @@ app.controller('MainCtrl', ['$scope', 'auth',
       }
       refreshJobFunc();
       var refreshJobs = $interval(refreshJobFunc, 10000);
-      $scope.$on("$destroy", function(){
+      $scope.$on("$destroy", function () {
         console.log("Cancelling autojob refresh");
         $interval.cancel(refreshJobs);
       });
@@ -171,17 +194,14 @@ app.controller('MainCtrl', ['$scope', 'auth',
 ])
   .controller('AuthCtrl', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
     $scope.user = {};
+    $scope.message = {};
 
     $scope.register = function () {
       console.log("Attempting to register");
       auth.register($scope.user).error(function (error) {
-        if (error.errors) {
-          $scope.error = error.errors[0].message;
-        } else {
-          $scope.error = error;
-        }
-        console.log(error);
-      }).then(function () {
+        $scope.message.r = error;
+      }).then(function (data) {
+        $scope.message.r = {};
         $('#registerModal').modal('hide');
         $state.go('account');
       });
@@ -189,8 +209,9 @@ app.controller('MainCtrl', ['$scope', 'auth',
 
     $scope.logIn = function () {
       auth.logIn($scope.user).error(function (error) {
-        $scope.error = error;
+        $scope.message.l = error;
       }).then(function () {
+        $scope.message.l = {};
         $('#loginModal').modal('hide');
         $state.go('account');
       });
