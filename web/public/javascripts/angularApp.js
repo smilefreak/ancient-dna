@@ -20,9 +20,9 @@ app.config(['$stateProvider', '$urlRouterProvider',
         templateUrl: '/account.ejs',
         controller: 'AccCtrl',
         resolve: {
-          accountJobs: ['jobs', function (jobs) {
-            return jobs.getAccJobs()
-                  }]
+          jNo: ['$stateParams', function ($stateParams) {
+            return $stateParams.jNo;
+          }]
         }
       })
       //add jobNo is real job at later points
@@ -62,12 +62,35 @@ app.config(['$stateProvider', '$urlRouterProvider',
 
 
 
-app.controller('MainCtrl', ['$scope', 'auth',
-    function ($scope, auth) {
+app.controller('MainCtrl', ['$scope', '$timeout', 'auth',
+    function ($scope, $timeout, auth) {
       $scope.test = 'test123';
+      //      if(!$scope.messages){
+      //        $scope.messages = {};
+      //      }
       $scope.currentUser = auth.currentUser;
       $scope.loggedIn = auth.isLoggedIn;
       $scope.logout = auth.logOut;
+      $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        if (toState.resolve) {
+          $scope.loadWheel = true;
+        }
+      });
+      $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        if (toState.resolve) {
+          $timeout(function () {
+            $scope.loadWheel = false;
+          }, 1000);
+        }
+      });
+      $scope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+        if (toState.resolve) {
+          $timeout(function () {
+            $scope.loadWheel = false;
+          }, 1000);
+          //add error wheel and present error to user, add fade
+        }
+      });
     }
 ])
   .controller('NewJobCtrl', ['$scope', '$state', 'jobs',
@@ -87,39 +110,50 @@ app.controller('MainCtrl', ['$scope', 'auth',
       }
     }
 ])
-  .controller('AccCtrl', ['$scope', 'accountJobs',
-    function ($scope, accountJobs) {
-      var oldJobDate = new Date();
-      $scope.oldJobs = [];
-      $scope.curJobs = [];
-      oldJobDate.setDate(oldJobDate.getDate() - 14);
-      accountJobs.results.forEach(function (job) {
-        switch (job.status) {
-        case "Complete":
-          job.labelStyle = "btn-success";
-          job.progressStyle = "progress-success";
-          break;
-        case "Processing":
-          job.labelStyle = "btn-primary";
-          break;
-        case "Paused":
-          job.labelStyle = "btn-warning";
-          job.progressStyle = "progress-warning";
-          break;
-        case "Failed":
-          job.labelStyle = "btn-danger";
-          job.progressStyle = "progress-danger";
-          break;
-        }
-        if (new Date(job.updatedAt) > oldJobDate) {
-          $scope.curJobs.push(job);
-        } else {
-          $scope.oldJobs.push(job);
-        }
+  .controller('AccCtrl', ['$scope', '$interval', 'jobs', 'jNo',
+    function ($scope, $interval, jobs, jNo) {
+      var refreshJobFunc = function () {
+        jobs.getAccJobs(jNo).then(
+          function (accountJobs) {
+            var oldJobDate = new Date();
+            $scope.oldJobs = [];
+            $scope.curJobs = [];
+            oldJobDate.setDate(oldJobDate.getDate() - 14);
+            accountJobs.results.forEach(function (job) {
+              switch (job.status) {
+              case "Complete":
+                job.labelStyle = "btn-success";
+                job.progressStyle = "progress-success";
+                break;
+              case "Processing":
+                job.labelStyle = "btn-primary";
+                break;
+              case "Paused":
+                job.labelStyle = "btn-warning";
+                job.progressStyle = "progress-warning";
+                break;
+              case "Failed":
+                job.labelStyle = "btn-danger";
+                job.progressStyle = "progress-danger";
+                break;
+              }
+              if (new Date(job.updatedAt) > oldJobDate) {
+                $scope.curJobs.push(job);
+              } else {
+                $scope.oldJobs.push(job);
+              }
+            });
+            console.log($scope.curJobs);
+            console.log($scope.oldJobs);
+            $scope.accountJobs = accountJobs;
+          });
+      }
+      refreshJobFunc();
+      var refreshJobs = $interval(refreshJobFunc, 10000);
+      $scope.$on("$destroy", function () {
+        console.log("Cancelling autojob refresh");
+        $interval.cancel(refreshJobs);
       });
-      console.log($scope.curJobs);
-      console.log($scope.oldJobs);
-      $scope.accountJobs = accountJobs;
     }
 ])
   .controller('ResultCtrl', ['$scope', '$stateParams', 'jobs', 'jobResults',
@@ -160,17 +194,14 @@ app.controller('MainCtrl', ['$scope', 'auth',
 ])
   .controller('AuthCtrl', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
     $scope.user = {};
+    $scope.message = {};
 
     $scope.register = function () {
       console.log("Attempting to register");
       auth.register($scope.user).error(function (error) {
-        if (error.errors) {
-          $scope.error = error.errors[0].message;
-        } else {
-          $scope.error = error;
-        }
-        console.log(error);
-      }).then(function () {
+        $scope.message.r = error;
+      }).then(function (data) {
+        $scope.message.r = {};
         $('#registerModal').modal('hide');
         $state.go('account');
       });
@@ -178,8 +209,9 @@ app.controller('MainCtrl', ['$scope', 'auth',
 
     $scope.logIn = function () {
       auth.logIn($scope.user).error(function (error) {
-        $scope.error = error;
+        $scope.message.l = error;
       }).then(function () {
+        $scope.message.l = {};
         $('#loginModal').modal('hide');
         $state.go('account');
       });
@@ -229,27 +261,27 @@ app.factory('auth', ['$http', '$window', function ($http, $window) {
     return auth;
 }])
   .factory('jobs', ['$http', 'auth', function ($http, auth) {
-      var o = {};
-      o.getResults = function (jNo) {
-        return $http.get('/job/' + jNo + '/fetchResults').then(function (res) {
-          return res.data;
-        });
-      };
-      o.getAccJobs = function () {
-        return $http.get('/account', {
-          headers: {
-            Authorization: 'Bearer ' + auth.getToken()
-          }
-        }).then(function (res) {
-          return res.data;
-        });
-      };
-      o.addJob = function (job) {
-        return $http.post('/newJob', job, {
-          headers: {
-            Authorization: 'Bearer ' + auth.getToken()
-          }
-        });
-      };
+    var o = {};
+    o.getResults = function (jNo) {
+      return $http.get('/job/' + jNo + '/fetchResults').then(function (res) {
+        return res.data;
+      });
+    };
+    o.getAccJobs = function () {
+      return $http.get('/account', {
+        headers: {
+          Authorization: 'Bearer ' + auth.getToken()
+        }
+      }).then(function (res) {
+        return res.data;
+      });
+    };
+    o.addJob = function (job) {
+      return $http.post('/newJob', job, {
+        headers: {
+          Authorization: 'Bearer ' + auth.getToken()
+        }
+      });
+    };
     return o;
   }])

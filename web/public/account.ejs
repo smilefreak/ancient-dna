@@ -1,6 +1,6 @@
 <h2>Hi, {{currentUser()}} ({{loggedIn()}})</h2>
 <h3 class="text-center">Current Jobs</h3>
-<div ng-repeat="job in curJobs">
+<div ng-repeat="job in curJobs | orderBy:'name'">
   <hr>
   <h4>{{job.name}} <span class="label {{job.labelStyle}}">{{job.status}}</span></h4>
   <progress class="progress {{job.progressStyle}}" value="{{job.progress}}" max="100">{{job.progress}}%</progress>
@@ -16,6 +16,8 @@
   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDelete" ng-show="job.status === 'Complete'">Delete</button>
 </div>
 <hr>
+
+
 <h4>Job A <span class="label label-primary">Processing</span></h4>
 <progress class="progress" value="37" max="100">37%</progress>
 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#log0" aria-expanded="false" aria-controls="log0">
