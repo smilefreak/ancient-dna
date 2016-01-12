@@ -1,20 +1,49 @@
-<form ng-submit="addJob()">
+<form ng-submit="addJob()" >
     <fieldset class="form-group">
-        <label for="jobName">Job Name</label>
+        <label for="jobName">Pipeline Job</label>
         <input type="text" class="form-control" id="jobName" placeholder="Enter a name for this job" ng-model="nJob.name">
     </fieldset>
     <fieldset class="form-group">
-        <label for="inFile">Files to Process</label>
-        <input type="file" class="form-control-file" id="inFile" multiple>
-        <small class="text-muted">Select your A/B/C type files.</small>
-    </fieldset>
-    <fielset class="form-group">
-        <p>This file input is not yet fully implemented by bootstrap, if they finish making it I will use it.</p>
-        <label class="file">
+        <p>
+        <label for="inFile">FASTQ input files</label>
+        </p>
+        <label class="file" id="inFile">
             <input type="file" id="file">
             <span class="file-custom"></span>
         </label>
-    </fielset>
+        <p>
+        <small class="text-muted">Makes sure file conform to &ltSample ID\&gt.*.R1.fq and to &ltSample ID\&gt.*.R2.fq </small>
+        </p>
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="mtdna_ref">Mitochondrial Reference</label>
+        <select class="form-control" id="mtdna_ref">
+       <option>Pig (NC_0012095.1)</option>
+       <option>Cow (NC_006853)</option>
+       <option>Chicken (NC_001323.1)</option>
+       <option>Human (NC_012920)</option>
+       <option>Dog (NC_002008)</option>
+        </select>
+    </fieldset>
+
+    <fieldset> 
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#advanced_options">Advanced pipeline options</button>
+        <div id="advanced_options" class="collapse">
+            <h5>Adapter Removal</h5>
+                <p>
+
+            <h5>BWA</h5>
+                <label for="max_edit_distance">Maximum edit distance (arg -n)</label>
+                <div class='form-group'>
+                    <input type="text" class="form-control" id="max_edit_distance" placeholder="0.04">
+                </div>
+        </div>
+    </fieldset>        
+
+
+
+
+
     <fieldset class="form-group c-inputs-stacked">
         <p>Select tools to run:</p>
         <label class="c-input c-checkbox">
